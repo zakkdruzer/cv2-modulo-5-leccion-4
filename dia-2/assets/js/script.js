@@ -3,21 +3,20 @@ document.querySelector("body").style.background = "#0f1117";
 class Producto {
     static #nextId = 1;
     #id;
-    #precio=0;
     constructor({ nombre, precio, categoria,cantidad }) {
         this.#id = Producto.#nextId++;
         this.nombre = nombre;
-        this.#precio = precio;
+        this.precio = precio;
         this.categoria = categoria;
     }
     get id() { return this.#id; }
-    get precio() { return '$' + this.#precio.toLocaleString('es-CL'); }
+    get preciof() { return '$' + this.precio.toLocaleString('es-CL'); }
 }
 class Carrito {              // el ESTADO vive acá
     #items = new Map();       // id → { producto, cantidad }
 
     agregar(producto) {
-        console.log(JSON.stringify(producto));
+        //console.log(JSON.stringify(producto));
         
         const item = this.#items.get(producto.id);
         if (item) {
@@ -92,7 +91,7 @@ const render=()=>{
           <div class="prod">
             <div class="prod-cat">${p.categoria}</div>
             <div class="prod-nom">${p.nombre}</div>
-            <div class="prod-precio">${p.precioCLP}</div>
+            <div class="prod-precio">${p.preciof}</div>
             <button class="btn-add" data-id="${p.id}">+ Agregar</button>
           </div>`).join('')}
       </div>
@@ -115,6 +114,8 @@ const render=()=>{
     b.addEventListener('click', () => {
       const prod = productos.find(p => p.id === Number(b.dataset.id));
       carrito.agregar(prod);
+      console.log(carrito);
+      
       console.log(`🛒 Agregado: ${prod.nombre} — Total: $${carrito.total.toLocaleString('es-CL')}`);
       render();
     }));
